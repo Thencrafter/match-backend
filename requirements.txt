@@ -1,2 +1,1 @@
-pip install pyinstaller==6.14.2;
-pyinstaller -f app.py;
+pyinstaller==6.14.2
