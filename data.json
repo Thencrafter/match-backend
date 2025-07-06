@@ -1,0 +1,198 @@
+[
+    {
+        "Name": "Kahonkey",
+        "Age": 16,
+        "TimeZone": 4,
+        "DM": "Open",
+        "Pronouns": "He/him",
+        "Match": "Romantic",
+        "Gender": "Male",
+        "Likes": [
+            "Music (Playing/listening)",
+            "Games",
+            "Anime/Shows/Movies",
+            "Spending time with people"
+        ],
+        "Extra": "Stuff lalala, !!!! ",
+        "AgeLower": 15,
+        "AgeUpper": 17,
+        "GenderPref": "Female",
+        "TimeDiff": 4,
+        "LikesPref": [
+            "Music (Playing/listening)",
+            "Games",
+            "Anime/Shows/Movies",
+            "Going out",
+            "Books/Novels]\n"
+        ],
+        "Matched": false,
+        "MatchedWith": null,
+        "PrevMatchedWith": [
+            "asdwa",
+            "Paislee"
+        ]
+    },
+    {
+        "Name": "asdwa",
+        "Age": 16,
+        "TimeZone": 4,
+        "DM": "Open",
+        "Pronouns": "sa",
+        "Match": "Both",
+        "Gender": "Female",
+        "Likes": [
+            "Games",
+            "Anime/Shows/Movies",
+            "Going out"
+        ],
+        "Extra": "wda",
+        "AgeLower": 15,
+        "AgeUpper": 17,
+        "GenderPref": "Male",
+        "TimeDiff": 4,
+        "LikesPref": [
+            "Music (Playing/listening)",
+            "Games",
+            "Anime/Shows/Movies",
+            "Going out",
+            "Cooking",
+            "Spending time with people]\n"
+        ],
+        "Matched": false,
+        "MatchedWith": null,
+        "PrevMatchedWith": [
+            "Kahonkey"
+        ]
+    },
+    {
+        "Name": "Karu",
+        "Age": 17,
+        "TimeZone": -4,
+        "DM": "Open",
+        "Pronouns": "he/him",
+        "Match": "Both",
+        "Gender": "Male",
+        "Likes": [
+            "Music (Playing/listening)",
+            "Games",
+            "Anime",
+            "Spending time with people",
+            "Books/Novels"
+        ],
+        "Extra": "for testing \ud83d\ude4f",
+        "AgeLower": 16,
+        "AgeUpper": 17,
+        "GenderPref": "Female",
+        "TimeDiff": 3,
+        "LikesPref": [
+            "Music (Playing/listening)",
+            "Games",
+            "Spending time with people",
+            "Books/Novels]\n"
+        ],
+        "Matched": false,
+        "MatchedWith": null,
+        "PrevMatchedWith": []
+    },
+    {
+        "Name": "Vinn",
+        "Age": 17,
+        "TimeZone": -8,
+        "DM": "Open",
+        "Pronouns": "She/Her",
+        "Match": "Both",
+        "Gender": "Female",
+        "Likes": [
+            "Music (Playing/listening)",
+            "Games",
+            "Shows",
+            "Movies",
+            "Going out",
+            "Cooking",
+            "Spending time with people",
+            "Books/Novels"
+        ],
+        "Extra": "Wooo",
+        "AgeLower": 16,
+        "AgeUpper": 17,
+        "GenderPref": "Male",
+        "TimeDiff": 4,
+        "LikesPref": [
+            "Music (Playing/listening)",
+            "Games",
+            "Anime/Shows/Movies",
+            "Going out",
+            "Spending time with people",
+            "Books/Novels]\n"
+        ],
+        "Matched": false,
+        "MatchedWith": null,
+        "PrevMatchedWith": [
+            "Max"
+        ]
+    },
+    {
+        "Name": "Paislee",
+        "Age": 17,
+        "TimeZone": 4,
+        "DM": "Closed",
+        "Pronouns": "She/her",
+        "Match": "Both",
+        "Gender": "Female",
+        "Likes": [
+            "Music (Playing/listening)",
+            "Games",
+            "Anime/Shows/Movies",
+            "Cooking",
+            "Books/Novels"
+        ],
+        "Extra": "uhh i like to deadlift",
+        "AgeLower": 16,
+        "AgeUpper": 18,
+        "GenderPref": "Any",
+        "TimeDiff": 4,
+        "LikesPref": [
+            "Music (Playing/listening)",
+            "Games",
+            "Anime/Shows/Movies",
+            "Cooking",
+            "Spending time with people",
+            "Books/Novels"
+        ],
+        "Matched": false,
+        "MatchedWith": null,
+        "PrevMatchedWith": [
+            "Kahonkey"
+        ]
+    },
+    {
+        "Name": "Max",
+        "Age": 16,
+        "TimeZone": -4,
+        "DM": "Open",
+        "Pronouns": "he/him",
+        "Match": "Romantic",
+        "Gender": "Male",
+        "Likes": [
+            "Music (Playing/listening)",
+            "Games",
+            "Cooking",
+            "Spending time with people"
+        ],
+        "Extra": "i like building",
+        "AgeLower": 16,
+        "AgeUpper": 17,
+        "GenderPref": "Any",
+        "TimeDiff": 4,
+        "LikesPref": [
+            "Music (Playing/listening)",
+            "Games",
+            "Spending time with people"
+        ],
+        "Matched": false,
+        "MatchedWith": null,
+        "PrevMatchedWith": [
+            "Vinn"
+        ]
+    }
+]
