@@ -51,6 +51,7 @@ def get_users():
 
 @app.route('/api/users', methods=['POST'])
 def addPerson(sample=sample):
+    global people_list
     data = request.get_json()
     info = data.get('text')
     new_person = sample.copy()
@@ -84,6 +85,7 @@ def addPerson(sample=sample):
 
 @app.route('/api/users/<name>', methods=['GET'])
 def findPeopleByName(name):
+    global people_list
     filtered_list = []
     for i in people_list:
         if name.lower() in i["Name"].lower():
@@ -93,6 +95,7 @@ def findPeopleByName(name):
 
 
 def findPersonByName(name):
+    global people_list
     for i in people_list:
         if name == i["Name"]:
             return i
@@ -102,7 +105,7 @@ def findPersonByName(name):
 def findMatch(name):
     person = None
     possible_matches = []
-
+    global people_list
     for p in people_list:
         if p["Name"] == name:
             person = p
@@ -144,6 +147,7 @@ def findMatch(name):
 
 @app.route('/api/find_match', methods=['POST'])
 def createMatch():
+    global people_list
     name1 = request.args.get('user1')
     name2 = request.args.get('user2')
     user1 = findPersonByName(name1)
@@ -162,6 +166,7 @@ def createMatch():
 
 @app.route('/api/delete_match/<name>', methods=['POST'])
 def removeMatch(name):
+    global people_list
     user = findPersonByName(name)
     user["Matched"] = False
     findPersonByName(user["MatchedWith"])["Matched"] = False
@@ -177,7 +182,7 @@ def removeMatch(name):
 
 
 def sortUserList(list):
-    return (sorted(people_list, key=lambda d: (d["TimeSinceAction"], d["Matched"])))
+    return (sorted(list), key=lambda d: (d["TimeSinceAction"], d["Matched"])))
 
 
 with open('data.json', 'r') as file:
