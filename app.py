@@ -70,7 +70,8 @@ def addPerson(sample=sample):
     new_person["Matched"] = False
     new_person["MatchedWith"] = None
     new_person["PrevMatchedWith"] = []
-    new_person["TimeSinceAction"] = datetime.now(UTC)
+    new_person["TimeSinceAction"] = datetime.now(
+        UTC).strftime("%Y/%m/%d, %H:%M:%S")
     for i in range(len(people_list)):
         if people_list[i]["Name"] == new_person["Name"]:
             people_list[i] = new_person
@@ -172,9 +173,9 @@ def removeMatch(name):
     findPersonByName(user["MatchedWith"])["Matched"] = False
     findPersonByName(user["MatchedWith"])["MatchedWith"] = None
     findPersonByName(user["MatchedWith"])[
-        "TimeSinceAction"] = datetime.now(UTC)
+        "TimeSinceAction"] = datetime.now(UTC).strftime("%Y/%m/%d, %H:%M:%S")
     user["MatchedWith"] = None
-    user["TimeSinceAction"] = datetime.now(UTC)
+    user["TimeSinceAction"] = datetime.now(UTC).strftime("%Y/%m/%d, %H:%M:%S")
     people_list = sortUserList(people_list)
     with open("data.json", "w") as json_file:
         json.dump(people_list, json_file, indent=4)
