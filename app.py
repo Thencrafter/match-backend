@@ -156,9 +156,11 @@ def createMatch():
     user1["Matched"] = True
     user1["MatchedWith"] = user2["Name"]
     user1["PrevMatchedWith"].append(user2["Name"])
+    user1["TimeSinceAction"] = datetime.now(UTC).strftime("%Y/%m/%d, %H:%M:%S")
     user2["Matched"] = True
     user2["MatchedWith"] = user1["Name"]
     user2["PrevMatchedWith"].append(user1["Name"])
+    user2["TimeSinceAction"] = datetime.now(UTC).strftime("%Y/%m/%d, %H:%M:%S")
     people_list = sortUserList(people_list)
     with open("data.json", "w") as json_file:
         json.dump(people_list, json_file, indent=4)
@@ -183,7 +185,7 @@ def removeMatch(name):
 
 
 def sortUserList(list):
-    return sorted(list, key=lambda d: (d["TimeSinceAction"], d["Matched"]))
+    return sorted(list, key=lambda d: (d["Matched"], d["TimeSinceAction"]))
 
 
 with open('data.json', 'r') as file:
