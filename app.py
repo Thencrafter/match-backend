@@ -182,7 +182,7 @@ def removeMatch(name):
 
 
 def sortUserList(list):
-    return (sorted(list), key=lambda d: (d["TimeSinceAction"], d["Matched"])))
+    return (sorted(list), key=lambda d: (d["TimeSinceAction"], d["Matched"]))
 
 
 with open('data.json', 'r') as file:
