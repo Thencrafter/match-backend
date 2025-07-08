@@ -98,11 +98,12 @@ def findPeopleByName(name):
     return jsonify(filtered_list)
 
 
-def findPersonByName(name):
+def findPersonByNameAndId(name, id):
     global people_list
     for i in people_list:
         if name == i["Name"]:
-            return i
+            if id == i["Id"]:
+                return i
 
 
 @app.route('/api/find_match/<name>', methods=['GET'])
@@ -154,15 +155,17 @@ def createMatch():
     global people_list
     name1 = request.args.get('user1')
     name2 = request.args.get('user2')
-    user1 = findPersonByName(name1)
-    user2 = findPersonByName(name2)
+    id1 = request.args.get('id1')
+    id2 = request.args.get('id2')
+    user1 = findPersonByNameAndId(name1, id1)
+    user2 = findPersonByNameAndId(name2, id2)
     user1["Matched"] = True
-    user1["MatchedWith"] = user2["Name"]
-    user1["PrevMatchedWith"].append(user2["Name"])
+    user1["MatchedWith"] = {"Name": user2["Name"], "Id": user2["Id"]}
+    user1["PrevMatchedWith"].append({"Name": user2["Name"], "Id": user2["Id"]})
     user1["TimeSinceAction"] = datetime.now(UTC).strftime("%Y/%m/%d, %H:%M:%S")
     user2["Matched"] = True
-    user2["MatchedWith"] = user1["Name"]
-    user2["PrevMatchedWith"].append(user1["Name"])
+    user2["MatchedWith"] = {"Name": user1["Name"], "Id": user1["Id"]}
+    user2["PrevMatchedWith"].append({"Name": user1["Name"], "Id": user1["Id"]})
     user2["TimeSinceAction"] = datetime.now(UTC).strftime("%Y/%m/%d, %H:%M:%S")
     people_list = sortUserList(people_list)
     with open("data.json", "w") as json_file:
@@ -170,15 +173,17 @@ def createMatch():
     return "Success"
 
 
-@app.route('/api/delete_match/<name>', methods=['POST'])
-def removeMatch(name):
+@app.route('/api/delete_match/<name>&<id>', methods=['POST'])
+def removeMatch(name, id):
     global people_list
-    user = findPersonByName(name)
+    user = findPersonByNameAndId(name, id)
     user["Matched"] = False
-    findPersonByName(user["MatchedWith"])["Matched"] = False
-    findPersonByName(user["MatchedWith"])["MatchedWith"] = None
-    findPersonByName(user["MatchedWith"])[
-        "TimeSinceAction"] = datetime.now(UTC).strftime("%Y/%m/%d, %H:%M:%S")
+    matched_user = findPersonByNameAndId(
+        user["MatchedWith"]["Name"], user["MatchedWith"]["Id"])
+    matched_user["Matched"] = False
+    matched_user["MatchedWith"] = None
+    matched_user["TimeSinceAction"] = datetime.now(
+        UTC).strftime("%Y/%m/%d, %H:%M:%S")
     user["MatchedWith"] = None
     user["TimeSinceAction"] = datetime.now(UTC).strftime("%Y/%m/%d, %H:%M:%S")
     people_list = sortUserList(people_list)
