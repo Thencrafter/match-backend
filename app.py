@@ -39,7 +39,7 @@ CORS(app)
 
 @app.route('/get_json', methods=['GET'])
 def get_json():
-    return send_file("data.json", mimetype="application/json")
+    return send_file("data.json", mimetype="application/json", as_attachment=True)
 
 
 @app.route('/api/users', methods=['GET'])
@@ -139,7 +139,8 @@ def findMatch(name, id):
                               set(i["Likes"]) and set(person["LikesPref"]))
 
         check_prev_matched = not (
-            i["Name"] in person["PrevMatchedWith"] or person["Name"] in i["PrevMatchedWith"])
+            any(d["Name"] == i["Name"] for d in person["PrevMatchedWith"]) or any(
+                d["Name"] == person["Name"] for d in i["PrevMatchedWith"]))
 
         if (age_check and timezone_check and match_check and gender_check and common_likes_check and not i["Matched"] and check_prev_matched):
             possible_matches.append(i)
