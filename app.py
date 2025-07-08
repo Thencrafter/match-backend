@@ -78,8 +78,7 @@ def addPeople(sample=sample):
             if people_list[i]["Name"] == new_person["Name"]:
                 j += 1
         new_person["Id"] = j
-        new_people.append(new_person)
-    people_list += new_people
+        people_list.append(new_person)
     people_list = sortUserList(people_list)
     file_path = "data.json"
     with open(file_path, "w") as json_file:
