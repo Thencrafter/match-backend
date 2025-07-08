@@ -104,7 +104,7 @@ def findPersonByNameAndId(name, id):
         print(i["Name"])
         print(id)
         if name == i["Name"]:
-            if id == i["id"]:
+            if id == i["Id"]:
                 return i
 
 
