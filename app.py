@@ -45,7 +45,7 @@ def get_json():
 @app.route('/api/users', methods=['GET'])
 def get_users():
     global people_list
-    # people_list = sortUserList(people_list)
+    people_list = sortUserList(people_list)
     return jsonify(people_list)
 
 
@@ -79,8 +79,8 @@ def addPeople(sample=sample):
                 j += 1
         new_person["Id"] = j
         new_people.append(new_person)
-    people_list.append(new_people)
-    # people_list = sortUserList(people_list)
+    people_list += new_people
+    people_list = sortUserList(people_list)
     file_path = "data.json"
     with open(file_path, "w") as json_file:
         json.dump(people_list, json_file, indent=4)
