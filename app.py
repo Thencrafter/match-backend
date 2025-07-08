@@ -29,7 +29,9 @@ sample = {
 }
 
 people_list = []
-user_db = {}
+user_db = {
+    "kahonkey": "Km1368lampoon"
+}
 
 UTC = pytz.utc
 app = Flask(__name__)
@@ -206,9 +208,6 @@ def sortUserList(list):
 
 with open('data.json', 'r') as file:
     people_list = json.load(file)
-
-with open('users.json', 'r') as file:
-    user_db = json.load(file)
 
 if __name__ == '__main__':
     app.run(port=5000)
