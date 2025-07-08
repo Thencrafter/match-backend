@@ -28,13 +28,24 @@ sample = {
     "LikesPref": ["Music", "Games", "Media", "Going out", "Cooking", "Time", "Books"]
 }
 
-people_list = [
-
-]
+people_list = []
+user_db = {}
 
 UTC = pytz.utc
 app = Flask(__name__)
 CORS(app)
+
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    if username in user_db and user_db[username] == password:
+        return jsonify({"success": True, "message": "Login successful"})
+    else:
+        return jsonify({"success": False, "message": "Invalid credentials"}), 401
 
 
 @app.route('/get_json', methods=['GET'])
@@ -63,7 +74,9 @@ def addPeople(sample=sample):
         for category in new_person.keys():
             info_item = person_info_list[i]
             if category == "Likes" or category == "LikesPref":
-                info_item = info_item.split(", ")
+                info_item = info_item.split(",")
+                info_item = [s.strip() for s in info_item]
+                info_item = [s.lower() for s in info_item]
             if category == "Age" or category == "TimeZone" or category == "TimeDiff" or category == "AgeUpper" or category == "AgeLower":
                 info_item = int(info_item)
             new_person[category] = info_item
@@ -193,6 +206,9 @@ def sortUserList(list):
 
 with open('data.json', 'r') as file:
     people_list = json.load(file)
+
+with open('users.json', 'r') as file:
+    user_db = json.load(file)
 
 if __name__ == '__main__':
     app.run(port=5000)
