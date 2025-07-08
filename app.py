@@ -103,6 +103,7 @@ def findPersonByNameAndId(name, id):
     for i in people_list:
         if name == i["Name"]:
             if id == i["Id"]:
+                print(i)
                 return i
 
 
@@ -201,24 +202,3 @@ with open('data.json', 'r') as file:
 
 if __name__ == '__main__':
     app.run(port=5000)
-    '''upload_file("data.json", "data.json")
-    download_file("1Mrgq7IycdMYb7NzDeqnP7D6MAAliCg_O", "data.json")'''
-    # Example usage:
-
-    # Create a new folder
-    # create_folder("MyNewFolder")
-
-    # List folders and files
-    # list_folder()
-
-    # Delete a file or folder by ID
-    # delete_files("your_file_or_folder_id")
-
-    # Download a file by its ID
-    # download_file("your_file_id", "destination_path/file_name.extension")'''
-
-
-'''info = input()
-addPerson(info, sample)
-info = input()
-addPerson(info, sample)'''
