@@ -159,6 +159,7 @@ def createMatch():
     id1 = request.args.get('id1')
     id2 = request.args.get('id2')
     user1 = findPersonByNameAndId(name1, id1)
+    print(user1)
     user2 = findPersonByNameAndId(name2, id2)
     user1["Matched"] = True
     user1["MatchedWith"] = {"Name": user2["Name"], "Id": user2["Id"]}
