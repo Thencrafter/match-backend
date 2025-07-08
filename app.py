@@ -50,33 +50,36 @@ def get_users():
 
 
 @app.route('/api/users', methods=['POST'])
-def addPerson(sample=sample):
+def addPeople(sample=sample):
     global people_list
     data = request.get_json()
     info = data.get('text')
-    new_person = sample.copy()
-    info_list = info.split("]\t")
-    i = 0
-    for category in new_person.keys():
-        info_item = info_list[i].strip("[]")
-        if category == "Likes" or category == "LikesPref":
-            info_item = info_item.split(", ")
-        if category == "Age" or category == "TimeZone" or category == "TimeDiff" or category == "AgeUpper" or category == "AgeLower":
-            info_item = int(info_item)
-        if category == "Matched":
-            new_person["Matched"] = False
-        new_person[category] = info_item
-        i += 1
-    new_person["Matched"] = False
-    new_person["MatchedWith"] = None
-    new_person["PrevMatchedWith"] = []
-    new_person["TimeSinceAction"] = datetime.now(
-        UTC).strftime("%Y/%m/%d, %H:%M:%S")
-    for i in range(len(people_list)):
-        if people_list[i]["Name"] == new_person["Name"]:
-            people_list[i] = new_person
-            return "Success"
-    people_list.append(new_person)
+    new_people = []
+    info_list = info.split("\n")
+    for person in info_list:
+        i = 0
+        new_person = sample.copy()
+        person_info_list = person.split("\t")
+        for category in new_person.keys():
+            info_item = person_info_list[i]
+            if category == "Likes" or category == "LikesPref":
+                info_item = info_item.split(", ")
+            if category == "Age" or category == "TimeZone" or category == "TimeDiff" or category == "AgeUpper" or category == "AgeLower":
+                info_item = int(info_item)
+            new_person[category] = info_item
+            i += 1
+        new_person["Matched"] = False
+        new_person["MatchedWith"] = None
+        new_person["PrevMatchedWith"] = []
+        new_person["TimeSinceAction"] = datetime.now(
+            UTC).strftime("%Y/%m/%d, %H:%M:%S")
+        j = 0
+        for i in range(len(people_list)):
+            if people_list[i]["Name"] == new_person["Name"]:
+                j += 1
+        new_person["Id"] = j
+        new_people.append(new_person)
+    people_list.append(new_people)
     people_list = sortUserList(people_list)
     file_path = "data.json"
     with open(file_path, "w") as json_file:
