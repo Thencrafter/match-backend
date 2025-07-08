@@ -102,16 +102,17 @@ def findPersonByNameAndId(name, id):
     global people_list
     for i in people_list:
         if name == i["Name"]:
-            return i
+            if id == i["Id"]:
+                return i
 
 
-@app.route('/api/find_match/<name>', methods=['GET'])
-def findMatch(name):
+@app.route('/api/find_match/<name>&<id>', methods=['GET'])
+def findMatch(name, id):
     person = None
     possible_matches = []
     global people_list
     for p in people_list:
-        if p["Name"] == name:
+        if p["Name"] == name and p["Id"] == id:
             person = p
             break
 
@@ -149,13 +150,9 @@ def findMatch(name):
     return possible_matches
 
 
-@app.route('/api/find_match', methods=['POST'])
-def createMatch():
+@app.route('/api/find_match/<name1>&<id1>&<name2>&<id2>', methods=['POST'])
+def createMatch(name1, id1, name2, id2):
     global people_list
-    name1 = request.args.get('user1')
-    name2 = request.args.get('user2')
-    id1 = request.args.get('id1')
-    id2 = request.args.get('id2')
     user1 = findPersonByNameAndId(name1, id1)
     print(user1)
     user2 = findPersonByNameAndId(name2, id2)
