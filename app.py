@@ -102,10 +102,9 @@ def findPersonByNameAndId(name, id):
     global people_list
     for i in people_list:
         print(i["Name"])
-        print(i["Id"])
+        print(id)
         if name == i["Name"]:
             return i
-    return people_list[0]
 
 
 @app.route('/api/find_match/<name>&<id>', methods=['GET'])
