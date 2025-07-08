@@ -106,6 +106,7 @@ def findPersonByNameAndId(name, id):
         if name == i["Name"]:
             if id == i["Id"]:
                 return i
+    return people_list[0]
 
 
 @app.route('/api/find_match/<name>&<id>', methods=['GET'])
