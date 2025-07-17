@@ -1,15 +1,10 @@
 import json
 import os
 import sys
-import tkinter as tk
-from tkinter import messagebox, scrolledtext
 from datetime import datetime
 import pytz
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
-from github import Github
-from dotenv import load_dotenv, dotenv_values
-load_dotenv()
 
 sample = {
     "Name": "placeholder",
@@ -28,26 +23,10 @@ sample = {
     "LikesPref": ["Music", "Games", "Media", "Going out", "Cooking", "Time", "Books"]
 }
 
-people_list = []
-user_db = {
-    "kahonkey": "Km1368lampoon"
-}
 
 UTC = pytz.utc
 app = Flask(__name__)
 CORS(app)
-
-
-@app.route('/api/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    username = data.get('username')
-    password = data.get('password')
-
-    if username in user_db and user_db[username] == password:
-        return jsonify({"success": True, "message": "Login successful"})
-    else:
-        return jsonify({"success": False, "message": "Invalid credentials"}), 401
 
 
 @app.route('/get_json', methods=['GET'])
@@ -88,11 +67,6 @@ def addPeople(sample=sample):
         new_person["PrevMatchedWith"] = []
         new_person["TimeSinceAction"] = datetime.now(
             UTC).strftime("%Y/%m/%d, %H:%M:%S")
-        j = 0
-        for i in range(len(people_list)):
-            if people_list[i]["Name"] == new_person["Name"]:
-                j += 1
-        new_person["Id"] = j
         people_list.append(new_person)
     people_list = sortUserList(people_list)
     file_path = "data.json"
@@ -101,34 +75,35 @@ def addPeople(sample=sample):
     return "Success"
 
 
+@app.route('/api/users/<user_id>&<edit>', methods=['POST'])
+def editInfo(user_id, edit):
+    user = findPersonByName(user_id)
+    data = request.get_json()
+    info = data.get('content')
+    user[edit] = info
+    with open("data.json", "w") as json_file:
+        json.dump(people_list, json_file, indent=4)
+    return "Success"
+
+
 @app.route('/api/users/<name>', methods=['GET'])
-def findPeopleByName(name):
-    global people_list
-    filtered_list = []
-    for i in people_list:
-        if name.lower() in i["Name"].lower():
-            filtered_list.append(i)
-    filtered_list = sortUserList(filtered_list)
-    return jsonify(filtered_list)
-
-
-def findPersonByNameAndId(name, id):
+def findPersonByName(name):
     global people_list
     for i in people_list:
-        print(i["Name"])
         if name == i["Name"]:
-            if int(id) == i["Id"]:
-                return i
+            return i
 
 
-@app.route('/api/find_match/<name>&<id>', methods=['GET'])
-def findMatch(name, id):
-    person = findPersonByNameAndId(name, id)
+@app.route('/api/find_match/<name>', methods=['GET'])
+def findMatch(name):
+    person = findPersonByName(name)
     possible_matches = []
     global people_list
-    print(person)
     if not person:
         return []
+
+    if person["Matched"]:
+        return "User is already matched"
 
     for i in people_list:
         if i == person:
@@ -150,11 +125,9 @@ def findMatch(name, id):
                          i["GenderPref"] == "Any"))
 
         common_likes_check = (set(person["Likes"]) and set(i["LikesPref"]) or
-                              set(i["Likes"]) and set(person["LikesPref"]))
+                              set(i["Likes"]) and set(person["LikesPref"])) or "any" in person["LikesPref"] or "any" in i["LikesPref"]
 
-        check_prev_matched = not (
-            any(d["Name"] == i["Name"] for d in person["PrevMatchedWith"]) or any(
-                d["Name"] == person["Name"] for d in i["PrevMatchedWith"]))
+        check_prev_matched = not (i["Name"] in person["PrevMatchedWith"])
 
         if (age_check and timezone_check and match_check and gender_check and common_likes_check and not i["Matched"] and check_prev_matched):
             possible_matches.append(i)
@@ -162,20 +135,20 @@ def findMatch(name, id):
     return possible_matches
 
 
-@app.route('/api/find_match/<name1>&<id1>&<name2>&<id2>', methods=['POST'])
-def createMatch(name1, id1, name2, id2):
+@app.route('/api/find_match/<name1>&<name2>', methods=['POST'])
+def createMatch(name1, name2):
     global people_list
-    print(id1)
-    print(id2)
-    user1 = findPersonByNameAndId(name1, id1)
-    user2 = findPersonByNameAndId(name2, id2)
+    user1 = findPersonByName(name1)
+    user2 = findPersonByName(name2)
+    if user1["Matched"] == True or user2["Matched"] == True:
+        return "One or both of the users are already matched", 409
     user1["Matched"] = True
-    user1["MatchedWith"] = {"Name": user2["Name"], "Id": user2["Id"]}
-    user1["PrevMatchedWith"].append({"Name": user2["Name"], "Id": user2["Id"]})
+    user1["MatchedWith"] = user2["Name"]
+    user1["PrevMatchedWith"].append(user2["Name"])
     user1["TimeSinceAction"] = datetime.now(UTC).strftime("%Y/%m/%d, %H:%M:%S")
     user2["Matched"] = True
-    user2["MatchedWith"] = {"Name": user1["Name"], "Id": user1["Id"]}
-    user2["PrevMatchedWith"].append({"Name": user1["Name"], "Id": user1["Id"]})
+    user2["MatchedWith"] = user1["Name"]
+    user2["PrevMatchedWith"].append(user1["Name"])
     user2["TimeSinceAction"] = datetime.now(UTC).strftime("%Y/%m/%d, %H:%M:%S")
     people_list = sortUserList(people_list)
     with open("data.json", "w") as json_file:
@@ -183,13 +156,13 @@ def createMatch(name1, id1, name2, id2):
     return "Success"
 
 
-@app.route('/api/delete_match/<name>&<id>', methods=['POST'])
-def removeMatch(name, id):
+@app.route('/api/delete_match/<name>', methods=['POST'])
+def removeMatch(name):
     global people_list
-    user = findPersonByNameAndId(name, id)
+    user = findPersonByName(name)
     user["Matched"] = False
-    matched_user = findPersonByNameAndId(
-        user["MatchedWith"]["Name"], user["MatchedWith"]["Id"])
+    matched_user = findPersonByName(
+        user["MatchedWith"])
     matched_user["Matched"] = False
     matched_user["MatchedWith"] = None
     matched_user["TimeSinceAction"] = datetime.now(
@@ -199,7 +172,7 @@ def removeMatch(name, id):
     people_list = sortUserList(people_list)
     with open("data.json", "w") as json_file:
         json.dump(people_list, json_file, indent=4)
-    return "Success"
+    return matched_user["Name"]
 
 
 def sortUserList(list):
