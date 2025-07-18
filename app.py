@@ -89,6 +89,7 @@ def editInfo(user_id, edit):
 
 @app.route('/api/users/<user>', methods=['DELETE'])
 def deleteUser(user):
+    global people_list
     person = findPersonByName(user)
     if not person:
         return "The user doesn't exist", 404
