@@ -67,6 +67,7 @@ def addPeople(sample=sample):
         new_person["PrevMatchedWith"] = []
         new_person["TimeSinceAction"] = datetime.now(
             UTC).strftime("%Y/%m/%d, %H:%M:%S")
+        deleteUser(new_person["Name"])
         people_list.append(new_person)
     people_list = sortUserList(people_list)
     file_path = "data.json"
@@ -81,6 +82,18 @@ def editInfo(user_id, edit):
     data = request.get_json()
     info = data.get('content')
     user[edit] = info
+    with open("data.json", "w") as json_file:
+        json.dump(people_list, json_file, indent=4)
+    return "Success"
+
+
+@app.route('/api/users/<user>', methods=['DELETE'])
+def deleteUser(user):
+    person = findPersonByName(user)
+    if not person:
+        return "The user doesn't exist", 404
+    people_list.remove(person)
+    people_list = sortUserList(people_list)
     with open("data.json", "w") as json_file:
         json.dump(people_list, json_file, indent=4)
     return "Success"
