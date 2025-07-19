@@ -91,7 +91,7 @@ def editInfo(user_id, edit):
 def deleteUser(user):
     global people_list
     person = findPersonByName(user)
-    if person == "None":
+    if person[0] == "None":
         return "The user doesn't exist", 404
     people_list.remove(person)
     people_list = sortUserList(people_list)
@@ -106,7 +106,7 @@ def findPersonByName(name):
     for i in people_list:
         if name == i["Name"]:
             return i
-    return "None"
+    return "None", 404
 
 
 @app.route('/api/find_match/<name>', methods=['GET'])
