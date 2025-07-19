@@ -106,7 +106,7 @@ def findPersonByName(name):
     for i in people_list:
         if name == i["Name"]:
             return i
-    return "None", 404
+    return "None"
 
 
 @app.route('/api/find_match/<name>', methods=['GET'])
